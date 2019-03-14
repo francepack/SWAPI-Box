@@ -70,38 +70,33 @@ export default class App extends Component {
     return Promise.all(promisesSpecies)
   }
 
-  // fetchInfo = (people) => {
-  //   let peopleInfo = people.results.map(person => {
-  //     this.getHomeInfo(person);
-  //     this.getSpeciesInfo(person);
-
-  //     return { name: person.name, home: home.name, species: species.name, pop: homeInfo.pop, fav: false}
-  //   })
-  //   this.setState({ people: peopleInfo })
-  // }
-
-  getHomeInfo = (person) => {
-    return fetch(person.homeworld)
-      .then(response => response.json())
-      .then(home => ({...home}))
-      .catch(error => this.setState({ error: error.message })) 
-  }
-
-  getSpeciesInfo = (person) => {
-    return fetch(person.species)
-      .then(response => response.json())
-      .then(species => ({...species}))
-      .catch(error => this.setState({ error: error.message })) 
-  }
-
   getPlanets = () => {
-    if (!this.state.Planets.length) {
+    if (!this.state.planets.length) {
       const planetUrl = 'https://swapi.co/api/planets'
       fetch(planetUrl)
         .then(response => response.json())
-        .then(result => this.setState({ planets: result.results }))
+        .then(planets => this.fetchResidents(planets))
+        .then(planets => this.setState({planets}))
+        .then(() => this.setState({ display: 'planets' }))
         .catch(error => this.setState({ error: error.message }))
     }
+  }
+
+  fetchResidents(planets) {
+    let residents = planets.results.map(planet => {
+      if (planet.residents.length) {
+        let promisesResidents = planet.residents.map(resident => { 
+          return fetch(resident)
+            .then(response => response.json())
+            .then(result => ({...planet, residents: result.name}))
+          })
+        return Promise.all(promisesResidents)
+        } else {
+          return {...planet, residents: []};
+        }
+    })
+    return residents
+    // return Promise.all(PromisesResidents)
   }
 
   getVehicles = () => {
@@ -109,7 +104,8 @@ export default class App extends Component {
       const vehicleUrl = 'https://swapi.co/api/vehicles'
       fetch(vehicleUrl)
         .then(response => response.json())
-        .then(result => this.setState({ vehicles: result.results }))
+        .then(vehicles => this.setState({ vehicles }))
+        .then(() => this.setState({ display: 'vehicles' }))
         .catch(error => this.setState({ error: error.message }))
     }
   }
@@ -118,14 +114,14 @@ export default class App extends Component {
 
   }
 
-  addFavorite = () => {
+  toggleFavorite = () => {
 
   }
 
   render() {
     console.log(this.state.people)
     console.log(this.state.display)
-
+    console.log(this.state.planets)
     return (
       <div className="App">
         <Header viewFavorites={this.viewFavorites}

@@ -44,8 +44,8 @@ export default class App extends Component {
         .then(response => response.json())
         .then(people => this.fetchHomeInfo(people))
         .then(people => this.fetchSpeciesInfo(people))
-        .then(people => this.setState({people}))
-        .then(() => this.setState({ display: 'people' }))
+        .then(people => this.setState({ people: people, display: 'people' }))
+        // .then(() => this.setState({ display: 'people' }))
         .catch(error => this.setState({ error: error.message }))
     } else {
       this.setState({ display: 'people' });
@@ -76,27 +76,29 @@ export default class App extends Component {
       fetch(planetUrl)
         .then(response => response.json())
         .then(planets => this.fetchResidents(planets))
-        .then(planets => this.setState({planets}))
-        .then(() => this.setState({ display: 'planets' }))
+        .then(planets => this.setState({ planets: planets, display: 'planets'}))
         .catch(error => this.setState({ error: error.message }))
+    } else {
+      this.setState({ display: 'planets' });
     }
   }
 
   fetchResidents(planets) {
     let residents = planets.results.map(planet => {
       if (planet.residents.length) {
+        let nameArr = []
         let promisesResidents = planet.residents.map(resident => { 
           return fetch(resident)
             .then(response => response.json())
-            .then(result => ({...planet, residents: result.name}))
+            .then(result => (nameArr.push(result.name)))
           })
-        return Promise.all(promisesResidents)
+        console.log(promisesResidents)
+        return {...planet, residents: nameArr}
         } else {
-          return {...planet, residents: []};
+          return planet;
         }
     })
-    return residents
-    // return Promise.all(PromisesResidents)
+    return Promise.all(residents)
   }
 
   getVehicles = () => {
@@ -104,9 +106,10 @@ export default class App extends Component {
       const vehicleUrl = 'https://swapi.co/api/vehicles'
       fetch(vehicleUrl)
         .then(response => response.json())
-        .then(vehicles => this.setState({ vehicles }))
-        .then(() => this.setState({ display: 'vehicles' }))
+        .then(vehicles => this.setState({ vehicles: vehicles.results, display: 'vehicles' }))
         .catch(error => this.setState({ error: error.message }))
+    } else {
+      this.setState({ display: 'vehicles' });
     }
   }
 
@@ -122,6 +125,7 @@ export default class App extends Component {
     console.log(this.state.people)
     console.log(this.state.display)
     console.log(this.state.planets)
+    console.log(this.state.vehicles)
     return (
       <div className="App">
         <Header viewFavorites={this.viewFavorites}

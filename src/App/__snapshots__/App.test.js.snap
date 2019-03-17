@@ -31,8 +31,10 @@ ShallowWrapper {
           getPlanets={[Function]}
           getVehicles={[Function]}
         />,
-        <p>
-          Select Cool stuff to View
+        <p
+          className="display-text"
+        >
+          Select Above to View
         </p>,
       ],
       "className": "App",
@@ -80,10 +82,11 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "host",
         "props": Object {
-          "children": "Select Cool stuff to View",
+          "children": "Select Above to View",
+          "className": "display-text",
         },
         "ref": null,
-        "rendered": "Select Cool stuff to View",
+        "rendered": "Select Above to View",
         "type": "p",
       },
     ],
@@ -108,8 +111,10 @@ ShallowWrapper {
             getPlanets={[Function]}
             getVehicles={[Function]}
           />,
-          <p>
-            Select Cool stuff to View
+          <p
+            className="display-text"
+          >
+            Select Above to View
           </p>,
         ],
         "className": "App",
@@ -157,10 +162,11 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "host",
           "props": Object {
-            "children": "Select Cool stuff to View",
+            "children": "Select Above to View",
+            "className": "display-text",
           },
           "ref": null,
-          "rendered": "Select Cool stuff to View",
+          "rendered": "Select Above to View",
           "type": "p",
         },
       ],

@@ -1,7 +1,11 @@
 .card-container {
-  border: 1px black solid;
   display: flex;
   flex-wrap: wrap;
   margin: 1em;
+}
 
+.display-text {
+  font-size: 200%;
+  letter-spacing: 1px;
+  margin-top: 60px;
 }

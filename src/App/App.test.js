@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 // import { makeFetch } from '../Fetch/Fetch'
+import * as api from '../Fetch/Fetch'
 import { shallow } from 'enzyme';
 
 
@@ -9,7 +10,7 @@ describe("App", () => {
   let wrapper;
   let mockUrl;
   let mockData;
-  let makeFetch;
+  let mockPeople;
   beforeEach(() => {
     wrapper = shallow(
       <App />
@@ -32,17 +33,20 @@ describe("App", () => {
     });
   });
 
+
   describe("getMovieQuote", () => {
-    // it("should call makeFetch", () => {
-    //   wrapper.instance().getMovieQuote(mockUrl)
-    //   expect(makeFetch).toBeCalled()
-    // });
-    it("should update movieQuote state", () => {
+    it("should call makeFetch", () => {
+      api.makeFetch = jest.fn(() => (Promise.resolve({opening_crawl:'hey', title:'A New Nope', release_date:"Summer of '07"})));
+      wrapper.instance().getMovieQuote()
+      expect(api.makeFetch).toBeCalled()
+    });
+    it("should update movieQuote state", async () => {
       const mockMovie = {opening_crawl: 'Galaxy', title: 'A No Hope', release_date: 'Decenever 42, 1901'}
       const resultMovieQuote = {quote: 'Galaxy', title: 'A No Hope', date: 'Decenever 42, 1901'}
-      makeFetch = jest.fn(() => (mockMovie));
+      api.makeFetch = jest.fn(() => (Promise.resolve(mockMovie)));
+      wrapper.setState({movieQuote: {}})
       expect(wrapper.state("movieQuote")).toEqual({});
-      wrapper.instance().getMovieQuote();
+      await wrapper.instance().getMovieQuote();
       expect(wrapper.state("movieQuote")).toEqual(resultMovieQuote);
     });
 
@@ -51,47 +55,63 @@ describe("App", () => {
     // it("should call makeFetch", () => {
 
     // });
-    it("should call addSpecies", () => {
+    // it("should call addSpecies", () => {
       
-    });
-    it("should call finalizeData", () => {
+    // });
+    // it("should call finalizeData", () => {
       
-    });
-    it("should update state people and display", () => {
-      
+    // });
+    it("should update states people and display", async () => {
+      const mockPeopleData = {results: [{name: 'Mason'}, {name: 'Isaac'}]}
+      api.makeFetch = jest.fn(() => (Promise.resolve(mockPeopleData)))
+      let addHomeworld = jest.fn(() => (Promise.resolve(mockPeopleData)))
+      let addSpecies = jest.fn(() => (Promise.resolve(mockPeopleData)))
+      let finalizeData = jest.fn(() => (Promise.resolve(mockPeopleData.results)))
+      expect(wrapper.state("people")).toEqual([]);
+      expect(wrapper.state("display")).toEqual('');
+      await wrapper.instance().getPeople()
+      expect(wrapper.state("display")).toEqual('people');    
+      expect(wrapper.state("people")).toEqual( [{name: 'Mason'}, {name: 'Isaac'}]);
     });
   });
-  describe('addHomeworld', () => {
+  describe("addHomeworld", async () => {
     it("should add properties of homeworld and population to each obj in array", async () => {
       mockData = {results: [{name: 'Mason'}, {name: 'Isaac'}]};
       let fetchData = {name: 'Mars', population: 100000};
-      let endData = [{name: 'Mason', name: 'Mars', population: 100000}, {name: 'Isaac'}];
-      makeFetch = jest.fn(() => fetchData)
+      let endData = [{name: 'Mason', homeworld: 'Mars', population: 100000}, {name: 'Isaac', homeworld: 'Mars', population: 100000}];
+      api.makeFetch = jest.fn(() => (Promise.resolve(fetchData)))
       const people = await wrapper.instance().addHomeworld(mockData)
-      expect(people).toBe(endData)
+      expect(people).toEqual(endData)
     });
   });
-  describe('addSpecies', () => {
-
+  describe("addSpecies",  () => {
+    it("should add properties species and category to each obj in arr", () => {
+      mockData = [{name: 'Mason'}, {name: 'Jessica'}];
+      let fetchSpecies = {name: 'kobold'};
+      let endSpecies = [{name: 'Mason', species: 'kobold', category:'person'}, {name: 'Jessica', species: 'kobold', category:'person'}];
+      api.makeFetch = jest.fn(() => (Promise.resolve(fetchSpecies)))
+      const result =  wrapper.instance().addSpecies(mockData)
+      expect(result).toEqual(endSpecies)
+    });
   });
-  describe('getPlanets', () => {
-    it("should call makeFetch", () => {
+  describe("getPlanets", () => {
+    // it("should call makeFetch", () => {
       
-    });
-    it("should call addResidents", () => {
+    // });
+    // it("should call addResidents", () => {
       
-    });
+    // });
     it("should update state planets and display", () => {
       
     });
   });
-  describe('addResidents', () => {
+  describe("addResidents", () => {
 
   });
-  describe('getResidents', () => {
+  describe("getResidents", () => {
 
   });
-  describe('getVehicles', () => {
+  describe("getVehicles", () => {
     it("should call makeFetch", () => {
       
     });
@@ -102,10 +122,10 @@ describe("App", () => {
       
     })
   });
-  describe('finalizeData', () => {
+  describe("finalizeData", () => {
 
   });
-  describe('', () => {
+  describe("", () => {
 
   });
 });  

@@ -41,6 +41,8 @@ export default class App extends Component {
         .then(people => this.finalizeData(people))
         .then(people => this.setState({ people: people, display: 'people' }))
         .catch(error => this.setState({ error: error.message }))
+    } else {
+      this.setState({ dispaly: 'people' })
     }
   }
 
@@ -60,15 +62,13 @@ export default class App extends Component {
     return Promise.all(addedSpecies)  
   }
 
-  //Should I clean my info? More neat to do that in my fetch builds, or outside function?
-  //Wondering if I need to normalize what I pass down, or have the card show a line for each key it sees
-
     finalizeData(arr) {
     const finishedObjects = arr.map(obj => {
       switch (obj.category) {
         case 'person':
           return { name: obj.name, 
-            category: obj.category, 
+            category: obj.category,
+            species: obj.species, 
             homeworld: obj.homeworld, 
             population: obj.population, 
             favorite: false, 
@@ -147,26 +147,21 @@ export default class App extends Component {
     this.setState({ display: 'favorites' })
   }
 
-  toggleFavorite = () => {
-
+  toggleFavorite = (e) => {
+    e.target.favorite = !e.target.favorite
   }
 
   render() {
-    console.log(this.state.people)
-    console.log(this.state.display)
-    console.log(this.state.planets)
-    console.log(this.state.vehicles)
-
-
     const { display, error } = this.state;
     let cardDisplay;
 
     if (error) {
-      cardDisplay = <p>{error}</p>
+      cardDisplay = <p className='display-text'>Error: {error}</p>
     } else if (!display) {
-      cardDisplay = <p>Select Cool stuff to View</p>
+      cardDisplay = <p className='display-text'>Select Above to View</p>
     } else {
       cardDisplay = <CardContainer data={this.state[display]}
+                                   toggleFav={this.toggleFavorite}
                     />
     }
 

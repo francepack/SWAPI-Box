@@ -4,10 +4,12 @@
 }
 
 .btn-container button {
+  background-color: $brownTan;
   border: 0;
   border-radius: 15px;
+  color: $midnightGreen;
   font-weight: 700;
-  height: 32px;
+  height: 35px;
   letter-spacing: 1px;
   margin-top: 30px;
   width: 140px;
@@ -16,13 +18,15 @@
     outline: none;
   }
   &:hover {
-    background-color: green;
+    background-color: $taupe;
+    cursor: pointer;
   }
   &:active {
-    background-color: red;
+    background-color: $taupe;
   }
   &:focus {
-    background-color: red;
+    background-color: $taupe;
+    color: $Gold;
   }
   //  buttons;
 }

@@ -6,7 +6,7 @@ const Header = (props) => {
   return(
     <header>
       <h1><span>SWAPI</span> - box</h1>
-      <button onClick={props.viewFavorites} className='display-fav'>View {props.favCount} Favorites </button>
+      <button onClick={props.viewFavorites} className='display-fav'>View <span>{props.favCount}</span> Favorites </button>
     </header>
   )
 }

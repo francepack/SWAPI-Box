@@ -1,6 +1,13 @@
-@mixin button {
+@mixin buttons {
+  background-color: $darkBlue;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   height: 30px;
   width: 100px;
+  &:focus {
+
+  }
+  &:hover {
+
+  }
 }

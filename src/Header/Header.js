@@ -4,10 +4,10 @@ import PropTypes from 'prop-types'
 const Header = (props) => {
 
   return(
-    <div className='header'>
-      <h1>SWAPI - box</h1>
-      <button className='display-fav'>View {props.favCount} Favorites </button>
-    </div>
+    <header>
+      <h1><span>SWAPI</span> - box</h1>
+      <button onClick={props.viewFavorites} className='display-fav'>View {props.favCount} Favorites </button>
+    </header>
   )
 }
 

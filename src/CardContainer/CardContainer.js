@@ -2,10 +2,12 @@ import React from 'react'
 import Card from '../Card/Card'
 import PropTypes from 'prop-types'
 
+
+
 const CardContainer = (props) => {
-  const cards = props.data.map(item => (<Card />))
+  const cards = props.data.map(item => (<Card key={item.name} {...item} />))
   return(
-    <div>
+    <div className='card-container'>
       {cards}
     </div>  
   )

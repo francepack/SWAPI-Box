@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 const Control = (props) => {
   const { getPeople, getPlanets, getVehicles } = props
   return(
-    <div>
+    <div className='btn-container'>
       <button onClick={getPeople}>People</button>
       <button onClick={getPlanets}>Planets</button>
       <button onClick={getVehicles}>Vehicles</button>

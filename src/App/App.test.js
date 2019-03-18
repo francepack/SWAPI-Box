@@ -49,20 +49,37 @@ describe("App", () => {
       await wrapper.instance().getMovieQuote();
       expect(wrapper.state("movieQuote")).toEqual(resultMovieQuote);
     });
+    it("should update state error if fetch fails", async () => {
+      api.makeFetch.mockImplementationOnce(() => {
+        throw new Error('Status 404 returned from the server.');
+      });
+        await wrapper.instance().getMovieQuote()
+        expect(wrapper.state('error')).toBe('Status 404 returned from the server.');
+    });
 
   });
   describe("getPeople", () => {
-    // it("should call makeFetch", () => {
-
+    // beforeEach(() => {
+    //   const mockPeopleData = {results: [{name: 'Mason'}, {name: 'Isaac'}]}
     // });
-    // it("should call addSpecies", () => {
-      
-    // });
+    it("should call makeFetch", () => {
+      let mockPeopleData = {results: [{name: 'Mason'}, {name: 'Isaac'}]}
+      api.makeFetch = jest.fn(() => (Promise.resolve(mockPeopleData)));
+      wrapper.instance().getPeople()
+      expect(api.makeFetch).toBeCalled()
+    });
+    it("should call addSpecies", () => {
+      let mockPeopleData = {results: [{name: 'Mason'}, {name: 'Isaac'}]}
+      api.makeFetch = jest.fn(() => (Promise.resolve(mockPeopleData)));
+      let addSpecies = jest.fn();
+      wrapper.instance().getPeople()
+      expect(addSpecies).toBeCalled()
+    });
     // it("should call finalizeData", () => {
       
     // });
     it("should update states people and display", async () => {
-      const mockPeopleData = {results: [{name: 'Mason'}, {name: 'Isaac'}]}
+      let mockPeopleData = {results: [{name: 'Mason'}, {name: 'Isaac'}]}
       api.makeFetch = jest.fn(() => (Promise.resolve(mockPeopleData)))
       let addHomeworld = jest.fn(() => (Promise.resolve(mockPeopleData)))
       let addSpecies = jest.fn(() => (Promise.resolve(mockPeopleData)))
@@ -93,11 +110,22 @@ describe("App", () => {
       const result =  wrapper.instance().addSpecies(mockData)
       expect(result).toEqual(endSpecies)
     });
+    it("should update state error if fetch fails", async () => {
+      wrapper.setState({error: ''})
+      api.makeFetch.mockImplementationOnce(() => {
+        throw new Error('Status 414 returned from the server.');
+      });
+        await wrapper.instance().getPeople(mockData)
+        expect(wrapper.state('error')).toBe('Status 414 returned from the server.');
+    });
   });
   describe("getPlanets", () => {
-    // it("should call makeFetch", () => {
-      
-    // });
+    it("should call makeFetch", () => {
+      let mockPlanetData = {results: [{name: 'Jupiter'}, {name: 'Mars'}]}
+      api.makeFetch = jest.fn(() => (Promise.resolve(mockPlanetData)));
+      wrapper.instance().getPlanets()
+      expect(api.makeFetch).toBeCalled()
+    });
     // it("should call addResidents", () => {
       
     // });
@@ -113,7 +141,10 @@ describe("App", () => {
   });
   describe("getVehicles", () => {
     it("should call makeFetch", () => {
-      
+      let mockVehicleData = {results: [{name: 'Tiefighter'}, {name: 'Starship'}]}
+      api.makeFetch = jest.fn(() => (Promise.resolve(mockVehicleData)));
+      wrapper.instance().getVehicles()
+      expect(api.makeFetch).toBeCalled()
     });
     it("should call finalizeData", () => {
       

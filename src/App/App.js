@@ -74,7 +74,6 @@ export default class App extends Component {
             favorite: false, 
             id: Date.now()
           }
-        break;
         case 'planet':
           return { name: obj.name, 
             category: obj.category, 
@@ -85,7 +84,6 @@ export default class App extends Component {
             favorite: false, 
             id: Date.now()
           }
-        break;
         case 'vehicle':
           return { name: obj.name, 
             category: obj.category, 
@@ -95,7 +93,6 @@ export default class App extends Component {
             favorite: false, 
             id: Date.now()
           }
-        break;
       }  
     })
     return finishedObjects;
@@ -148,7 +145,7 @@ export default class App extends Component {
   }
 
   toggleFavorite = (e) => {
-    e.target.favorite = !e.target.favorite
+    
   }
 
   render() {

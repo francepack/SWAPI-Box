@@ -28,6 +28,19 @@
   color: $midnightGreen;
 }
 
+.resident-head {
+  font-style: italic;
+  text-decoration: underline;
+}
+
+.card-content ul {
+  padding-left: 0;
+}
+
+.card-content li {
+  list-style: none;
+}
+
 .star {
   margin-right: 10px;
   &:hover {

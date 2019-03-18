@@ -47,8 +47,11 @@ const Card = (props) => {
         }
         {props.residents && 
           <div>
-            <h4>Residents of Note</h4>
+            <p className="resident-head">Residents of Note</p>
             <ul>
+              {!props.residents.length && 
+                <li>None</li>
+              }
               {props.residents.map(resident => {
                 return <li key={resident}>{resident}</li>
               })}
@@ -63,6 +66,11 @@ const Card = (props) => {
       {card} 
     </div>
   )
+}
+
+
+Card.propTypes = {
+  
 }
 
 export default Card
